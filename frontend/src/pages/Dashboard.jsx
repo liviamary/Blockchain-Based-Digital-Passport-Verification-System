@@ -238,7 +238,7 @@ const handleApprove = async (passportID) => {
     );
 
     // Temporary QR URL (can be replaced later)
-    const qrURL = `http://localhost:5173/verify/${passportID}`;
+    const qrURL = `https://blockchain-based-digital-passport-v.vercel.app/verify/${passportID}`;
 
 
     const tx = await contract.approveApplication(passportID, qrURL);
