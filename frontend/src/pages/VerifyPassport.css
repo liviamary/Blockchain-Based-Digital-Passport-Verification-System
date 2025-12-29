@@ -1,0 +1,153 @@
+.verify-page-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.back-btn {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    background: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.verification-card {
+    background: #fff;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    overflow: hidden;
+    position: relative;
+    border-top: 8px solid #6a052e; /* Default portal color */
+}
+
+/* Status Colors */
+.verification-card.verified { border-top-color: #10b981; }
+.verification-card.failed { border-top-color: #ef4444; }
+
+.card-header {
+    text-align: center;
+    padding: 40px 20px 20px;
+}
+
+.status-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+}
+
+.status-icon.success { color: #10b981; }
+.status-icon.danger { color: #ef4444; }
+.status-icon.spin { color: #3b82f6; animation: spin 2s linear infinite; }
+
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+.card-header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #111827;
+}
+
+.passport-id-tag {
+    font-family: monospace;
+    color: #6b7280;
+    background: #f3f4f6;
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 6px;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.card-body {
+    padding: 30px;
+    border-top: 1px solid #f3f4f6;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.detail-item label {
+    display: block;
+    font-size: 0.75rem;
+    color: #9ca3af;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.detail-item p {
+    margin: 0;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.status-badge {
+    background: #dcfce7;
+    color: #166534;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.card-footer {
+    padding: 20px;
+    text-align: center;
+    background: #f9fafb;
+    position: relative;
+}
+
+.card-footer p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #9ca3af;
+}
+
+.security-seal {
+    position: absolute;
+    right: 20px;
+    bottom: 15px;
+    border: 2px solid #e5e7eb;
+    color: #e5e7eb;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 900;
+    transform: rotate(-15deg);
+    font-size: 0.7rem;
+    pointer-events: none;
+}
+
+/* Skeleton Loading */
+.skeleton-loader .line {
+    height: 15px;
+    background: #f3f4f6;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+.shimmer {
+    background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
