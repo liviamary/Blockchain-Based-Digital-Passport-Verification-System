@@ -3,21 +3,23 @@ import { ethers } from "ethers";
 /**
  * ----------------------------------------------------
  * Blockchain read utility
- * Fetches ipfsHash (CID) ONLY if passport is Approved
+ * Fetches ipfsHash (CID) for ANY existing passport
  * ----------------------------------------------------
  */
 
+
+console.log("🔗 Backend RPC:", process.env.RPC_URL);
+console.log("📜 Backend Contract:", process.env.CONTRACT_ADDRESS);
 // 1️⃣ Provider (Sepolia via Infura)
 const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
 
-// 2️⃣ Contract address (from .env)
+// 2️⃣ Contract address
 const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
 
-// 🔍 Log once at startup (helps debugging)
 console.log("🔗 Blockchain provider RPC:", process.env.RPC_URL);
 console.log("📜 Contract address:", CONTRACT_ADDRESS);
 
-// 3️⃣ Minimal ABI (ONLY what we need)
+// 3️⃣ Minimal ABI
 const CONTRACT_ABI = [
   "function getApplication(string _passportID) view returns (string passportID, address userWallet, string status, string qrURL, string ipfsHash, uint256 createdAt, uint256 updatedAt)"
 ];
@@ -30,42 +32,33 @@ const contract = new ethers.Contract(
 );
 
 /**
- * 5️⃣ Fetch CID (ipfsHash) ONLY for Approved passports
+ * 5️⃣ Fetch CID (ipfsHash) for ANY passport (Pending or Approved)
  */
 export async function getCidFromBlockchain(passportID) {
   try {
-    console.log("➡️ Fetching application from blockchain for passportID:", passportID);
+    console.log("➡️ Fetching application for:", passportID);
 
     const result = await contract.getApplication(passportID);
 
-    console.log("📦 Raw contract result:", result);
+    console.log("📦 FULL RESULT:", result);
+    console.log("📌 passportID:", result.passportID);
+    console.log("📌 status:", result.status);
+    console.log("📌 ipfsHash:", result.ipfsHash);
 
-    // 🛑 If application does not exist
-    if (!result || !result[0]) {
-      console.error("❌ Application not found on blockchain");
+    if (!result.passportID || result.passportID.trim() === "") {
+      console.log("❌ Application does not exist");
       return null;
     }
 
-    // 1️⃣ Check approval status
-    const status = result.status || result[2];
-    if (status !== "Approved") {
-      console.warn(`⛔ Passport ${passportID} is not approved (status: ${status})`);
+    if (!result.ipfsHash || result.ipfsHash.trim() === "") {
+      console.log("❌ IPFS hash is EMPTY");
       return null;
     }
 
-    // 2️⃣ Extract IPFS hash
-    const ipfsHash = result.ipfsHash || result[4];
-
-    if (!ipfsHash || ipfsHash.trim() === "") {
-      console.error("❌ No IPFS hash found for approved passport:", passportID);
-      return null;
-    }
-
-    console.log("✅ Approved passport | IPFS hash found:", ipfsHash);
-    return ipfsHash;
+    return result.ipfsHash;
 
   } catch (err) {
     console.error("❌ Blockchain read error:", err.message);
-    throw err; // handled by route → returns 500
+    throw err;
   }
 }
